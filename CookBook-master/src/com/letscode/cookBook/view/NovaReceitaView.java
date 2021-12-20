@@ -18,7 +18,7 @@ public class NovaReceitaView {
     List<Ingrediente> ingredientes = new ArrayList<>();
     List<String> modoPreparo = new ArrayList<>();
 
-    public Receita nova() {
+    public Receita adiciona() {
         this.receita = new Receita(askNome(), askCategoria(), askTempoPreparo(),
                 askRendimento(), askIngredientes(), askModoPreparo());
         return receita;
@@ -49,10 +49,10 @@ public class NovaReceitaView {
                 categoria = new Scanner(System.in).nextInt();
 
                 if (categoria < 0 || categoria >= Categoria.values().length) {
-                    System.out.println("Categoria inválida!");
+                    System.out.println("Categoria não existe, digite uma válida!");
                 }
-            } catch (InputMismatchException | ArrayIndexOutOfBoundsException e) {
-                System.out.println("Categoria inválida!");
+            } catch (InputMismatchException e) {
+                System.out.println("Categoria não existe, digite uma válida!");
             }
 
         } while (categoria < 0 || categoria >= Categoria.values().length);
@@ -69,13 +69,13 @@ public class NovaReceitaView {
         try {
             tempo = new Scanner(System.in).nextInt();
             if (tempo <= 0) {
-                System.out.println("Tempo inválido! Tente novamente!");
+                System.out.println("Tempo inválido! Tente novamente digitando um valor válido!");
                 askTempoPreparo();
             }
 
             this.tempoPreparo = tempo;
         } catch (InputMismatchException e) {
-            System.out.println("Tempo inválido! Tente novamente!");
+            System.out.println("Tempo inválido! Tente novamente digitando um valor válido!!");
             askTempoPreparo();
         }
 

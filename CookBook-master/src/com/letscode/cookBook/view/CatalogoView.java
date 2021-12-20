@@ -3,6 +3,7 @@ package com.letscode.cookBook.view;
 import com.letscode.cookBook.controller.Catalogo;
 import com.letscode.cookBook.domain.Receita;
 import com.letscode.cookBook.enums.Categoria;
+import jdk.swing.interop.SwingInterOpUtils;
 
 import java.util.Scanner;
 
@@ -13,17 +14,18 @@ public class CatalogoView {
     Catalogo controller = new Catalogo();
 
     private void showHeader() {
-        ScreenUtil.printTextLine("", 80, true, '=');
-        ScreenUtil.printTextLine("#### #### #### #  #  ###  #### #### #  #", 80, true, ' ');
-        ScreenUtil.printTextLine("#    #  # #  # # #   #  # #  # #  # # # ", 80, true, ' ');
-        ScreenUtil.printTextLine("#    #  # #  # ##    ###  #  # #  # ##  ", 80, true, ' ');
-        ScreenUtil.printTextLine("#    #  # #  # # #   #  # #  # #  # # # ", 80, true, ' ');
-        ScreenUtil.printTextLine("#### #### #### #  #  ###  #### #### #  #", 80, true, ' ');
-        ScreenUtil.printTextLine("", 80, true, '=');
+        ScreenUtil.printTextLine("", 90, true, '=');
+        ScreenUtil.printTextLine("#### #### #### #  #  ###  #### #### #  #", 134, true, ' ');
+        ScreenUtil.printTextLine("#    #  # #  # # #   #  # #  # #  # # # ", 134, true, ' ');
+        ScreenUtil.printTextLine("#    #  # #  # ##    ###  #  # #  # ##  ", 134, true, ' ');
+        ScreenUtil.printTextLine("#    #  # #  # # #   #  # #  # #  # # # ", 134, true, ' ');
+        ScreenUtil.printTextLine("#### #### #### #  #  ###  #### #### #  #", 134, true, ' ');
+        ScreenUtil.printTextLine("", 90, true, '=');
+
     }
 
     private void showReceita(Receita receita) {
-        System.out.println(receita.toString());
+        System.out.println("Receita: " + receita.toString());
     }
 
     private void showAnterior() {
@@ -41,17 +43,22 @@ public class CatalogoView {
         if (receita != null) curIndex++;
     }
 
-    private void add() {
+    private void add() throws InterruptedException {
 
         //TODO: Implement Add
 
-        Receita novaReceita = new NovaReceitaView().nova();
+        Receita novaReceita = new NovaReceitaView().adiciona();
         if (curIndex < 0) {
             controller.add(novaReceita);
             this.receita = novaReceita;
             curIndex++;
+            System.out.println("-----------------------------------RECEITA ADICIONADA COM SUCESSO-----------------------------------");
+            Thread.sleep(2000);
         } else {
             controller.add(novaReceita);
+            System.out.println("-----------------------------------RECEITA ADICIONADA COM SUCESSO-----------------------------------");
+            Thread.sleep(2000);
+            showSeguinte();
         }
 
        /* NovaReceitaView novaReceita = new NovaReceitaView();
@@ -63,10 +70,9 @@ public class CatalogoView {
         show();*/
 
 
-
     }
 
-    private void del() {
+    private void del() throws InterruptedException {
         if (curIndex == 0) {
             if (controller.getReceita(curIndex + 1) != null) {
                 controller.del(receita.getNome());
@@ -80,26 +86,42 @@ public class CatalogoView {
             if (controller.getReceita(curIndex + 1) != null) {
                 controller.del(receita.getNome());
                 this.receita = controller.getReceita(curIndex);
+
+                System.out.println("-----------------------------------RECEITA REMOVIDA COM SUCESSO-----------------------------------");
+                Thread.sleep(2000);
+
             } else if (controller.getReceita(curIndex - 1) != null) {
                 controller.del(receita.getNome());
                 curIndex--;
                 this.receita = controller.getReceita(curIndex);
+                System.out.println("-----------------------------------RECEITA REMOVIDA COM SUCESSO-----------------------------------");
+                Thread.sleep(2000);
+
             }
         } else if (curIndex == -1) {
-            System.out.println("Catálogo vazio!");
+            System.out.println("Catálogo está vazio!");
         }
     }
 
-    public void show() {
+    public void search() {
+        String nome;
+        System.out.print("Digite o nome da receita: ");
+        nome = new Scanner(System.in).nextLine();
+        Receita receita = controller.getReceita(nome);
+
+    }
+
+
+    public void show() throws InterruptedException {
         showHeader();
         showReceita(receita == null ? NONE_FOUND : receita);
-        ScreenUtil.printTextLine("", 80, true, '=');
-        ScreenUtil.printTextLine("P: Receita anterior", 80, true);
-        ScreenUtil.printTextLine("N: Receita seguinte", 80, true);
-        ScreenUtil.printTextLine("+: Adicionar nova receita", 80, true);
-        ScreenUtil.printTextLine("-: Remover receita", 80, true);
-        ScreenUtil.printTextLine("S: Pesquisar receita", 80, true);
-        ScreenUtil.printTextLine("", 80, true, '=');
+        ScreenUtil.printTextLine("-----------------------------------");
+        ScreenUtil.printTextLine("P: Receita anterior", 80);
+        ScreenUtil.printTextLine("N: Receita seguinte", 80);
+        ScreenUtil.printTextLine("+: Adicionar nova receita", 80);
+        ScreenUtil.printTextLine("-: Remover receita", 80);
+        ScreenUtil.printTextLine("S: Pesquisar receita", 80);
+        ScreenUtil.printTextLine("", 80);
         ScreenUtil.printTextLine("#: ", 80);
         String option;
         do {
@@ -119,6 +141,7 @@ public class CatalogoView {
                     break;
                 case "S":
                     //TODO: Implement Search
+                    search();
                     break;
                 default:
                     ScreenUtil.printTextLine("Opção inválida", 80);

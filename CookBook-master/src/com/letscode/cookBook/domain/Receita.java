@@ -66,6 +66,6 @@ public class Receita {
             }
         }
 
-        return String.format("%s%n\t%s%n%nRendimento: %s%nTempo: %s%nIngredientes:%n%sModo de preparo:%n%s", nome, categoria, rendimento, tempo, ingredientes, modoPreparo);
+        return String.format("%s%nCategoria: %s%n%nRendimento: %s%nTempo: %s%nIngredientes:%s%nModo de preparo:%s%n", nome, categoria, rendimento, tempo, ingredientes, modoPreparo);
     }
 }
